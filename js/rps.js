@@ -1,3 +1,5 @@
+
+
 /*Project - Rock Paper Scissors
 
 PSEUDO CODE:
@@ -124,11 +126,11 @@ function game(){
     playerPoints = 0;
     computerPoints = 0;
 
-    for (let i = 0; i < 5; i++){
+   /* for (let i = 0; i < 5; i++){
         playRound();
         console.log("Computer points: " + computerPoints + "\n" + 
                     "Player points: " + playerPoints);
-    }
+    } */
 
     if(playerPoints > computerPoints){
         console.log("Player is the game winner!");
@@ -138,3 +140,12 @@ function game(){
         console.log("It's a tie!");
     }
 }
+
+
+const buttons = document.querySelectorAll("button");
+    buttons.forEach((button) => {
+
+    button.addEventListener("click", () => {
+        console.log("YeyHurey")
+    })
+});    
