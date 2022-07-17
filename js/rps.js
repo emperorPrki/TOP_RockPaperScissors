@@ -45,7 +45,7 @@ Add game function that combines all previous functions to form a game  ++
 */
 
 
-let playerSelection;
+let playerSelection = "";
 let computerSelection;
 let playerPoints = 0;
 let computerPoints = 0;
@@ -59,7 +59,6 @@ function capitalize(str){
 //Gets weapon of choice input from player.
 function playerPlay() {
 
-    playerSelection = prompt("Choose a weapon of choice", "");
     playerSelection = playerSelection.toLowerCase();
     if (playerSelection !== weapons[0] && playerSelection !== weapons[1] && playerSelection !== weapons[2]){
         console.log("Choose a valid weapon!")
@@ -68,7 +67,6 @@ function playerPlay() {
         console.log("User picked: " + capitalize(playerSelection));
         return playerSelection;
     }
-    
 }
 
 //Gets computers weapon of choice using randomized numbers 1 - 3;
@@ -118,34 +116,98 @@ function playRound() {
     playerPlay();
     computerPlay();
     evaluateRoundWinner();
+
+    if(playerPoints === 5){
+        divGameWinner.textContent = `Player wins the game with ${playerPoints} wins!`;
+        disableButtons();
+        newGameButton();
+    } else if (computerPoints === 5) {
+        divGameWinner.textContent = `Computer wins the game with ${computerPoints} wins!`;
+        disableButtons();
+        newGameButton();
+    }
 }
 
 //Resets all counters to 0, plays 5 rounds after which it announces the game winner
+/*
 function game(){
+
 
     playerPoints = 0;
     computerPoints = 0;
 
-   /* for (let i = 0; i < 5; i++){
+   for (let i = 0; i < 5; i++){
         playRound();
         console.log("Computer points: " + computerPoints + "\n" + 
                     "Player points: " + playerPoints);
-    } */
+    }
 
     if(playerPoints > computerPoints){
-        console.log("Player is the game winner!");
+        divGameWinner.textContent = `Player wins the game with ${playerPoints} wins!`;
     } else if (playerPoints < computerPoints) {
-        console.log("Computer is the game winner!");
+        divGameWinner.textContent = `Computer wins the game with ${computerPoints} wins!`;
     } else {
-        console.log("It's a tie!");
+        divGameWinner.textContent = `It's a tie, no winners!`;
     }
 }
+*/
 
 
-const buttons = document.querySelectorAll("button");
-    buttons.forEach((button) => {
-
+//After clicking a weapon button, assigns weapon to playerSelection and displays it in a div
+const wepButton = document.querySelectorAll("#weapons button");
+wepButton.forEach((button) => {
     button.addEventListener("click", () => {
-        console.log("YeyHurey")
-    })
-});    
+        playerSelection = capitalize(button.id);
+        console.log(playerSelection);
+        displayChosenWeapon.textContent = "Player has chosen: " + playerSelection;
+        playRound();
+    }      
+)});
+
+//Add playerWeapon div to the HTML
+const showPlayerWeapon = document.querySelector("#weapons")
+    const playerWeapon = document.createElement("div");
+    showPlayerWeapon.appendChild(playerWeapon);
+    playerWeapon.setAttribute("id", "playerWeapon");
+
+//Displays weapon the player chose
+    const displayChosenWeapon = document.querySelector("#playerWeapon")
+
+const showGameWinner = document.querySelector("#results");
+    const divGameWinner = document.createElement("div");
+    showGameWinner.appendChild(divGameWinner);
+
+
+//Disable buttons
+    function disableButtons(){
+       const disableButton = document.querySelectorAll("#weapons button");
+        disableButton.forEach((button) => {
+            button.disabled = true;
+        });
+    };
+    
+//Enable buttons
+    function enableButtons(){
+        const enableButton = document.querySelectorAll("#weapons button");
+        enableButton.forEach((button) => {
+            button.disabled = false;
+        })
+    }
+
+//New game button
+    function newGameButton(){
+        const newGame = document.querySelector("#weapons");
+        const newGameButton = document.createElement("button");
+        newGameButton.textContent = "New game!";
+        newGameButton.setAttribute("id", "newGameButton");
+        newGame.appendChild(newGameButton);
+
+        const restartGame = document.querySelector("#weapons #newGameButton");
+        restartGame.addEventListener("click", () => {
+            playerPoints = 0;
+            computerPoints = 0;
+            divGameWinner.textContent = "";
+            displayChosenWeapon.textContent = "";
+            enableButtons();
+        });
+    }

@@ -1,0 +1,17 @@
+*{
+    font-size: 16px;
+}
+
+html,
+body{
+    box-sizing: border-box;
+    margin: 0;
+    background-color: hsl(50, 35%, 25%)
+}
+
+h1{
+    text-align: center;
+    font-size: 2.5em;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
+}
+
