@@ -57,14 +57,15 @@ function capitalize(str){
 }
 
 //Gets weapon of choice input from player.
+
 function playerPlay() {
 
     playerSelection = playerSelection.toLowerCase();
     if (playerSelection !== weapons[0] && playerSelection !== weapons[1] && playerSelection !== weapons[2]){
-        console.log("Choose a valid weapon!")
+        displayChosenWeapon.textContent = ("Choose a valid weapon!")
         playerPlay();
     } else {
-        console.log("User picked: " + capitalize(playerSelection));
+        displayChosenWeapon.textContent = ("User picked: " + capitalize(playerSelection));
         return playerSelection;
     }
 }
@@ -75,18 +76,18 @@ function computerPlay() {
     let randomNumber = Math.floor(Math.random() * 3 + 1);
     if (randomNumber === 1){
         computerSelection = weapons[0];
-        console.log("Computer picked: " + capitalize(computerSelection));
+        displayChosenWeaponCPU.textContent = ("CPU picked: " + capitalize(computerSelection));
         return computerSelection;
     } else if (randomNumber === 2){
         computerSelection = weapons[1];
-        console.log("Computer picked: " + capitalize(computerSelection));
+        displayChosenWeaponCPU.textContent = ("Computer picked: " + capitalize(computerSelection));
         return computerSelection;
     } else if (randomNumber === 3){
         computerSelection = weapons[2];
-        console.log("Computer picked: " + capitalize(computerSelection));
+        displayChosenWeaponCPU.textContent = ("Computer picked: " + capitalize(computerSelection));
         return computerSelection;
     } else {
-        console.log("Something went wrong, try again!");
+        displayChosenWeaponCPU.textContent = ("Something went wrong, try again!");
     }
 }
 
@@ -96,17 +97,19 @@ function evaluateRoundWinner() {
     if (playerSelection === "rock" && computerSelection === "paper" ||
         playerSelection === "paper" && computerSelection === "scissors" ||
         playerSelection === "scissors" && computerSelection === "rock") {
-        console.log("Computer wins! " + capitalize(computerSelection) + " beats " + capitalize(playerSelection) + "!");
-        return ++playerPoints;
+        roundWin.textContent = "Computer wins! " + capitalize(computerSelection) + " beats " + capitalize(playerSelection) + "!";
+        ++computerPoints
+        runningScoreCPU.textContent = computerPoints;
     } else if (playerSelection === "rock" && computerSelection === "scissors" ||
                playerSelection === "paper" && computerSelection === "rock" ||
                playerSelection === "scissors" && computerSelection === "paper") {
-        console.log("User wins! " + capitalize(playerSelection) + " beats " + capitalize(computerSelection) + "!");
-        return ++computerPoints
+        roundWin.textContent = "User wins! " + capitalize(playerSelection) + " beats " + capitalize(computerSelection) + "!";
+        ++playerPoints
+        runningScorePlayer.textContent = playerPoints;
     } else if (playerSelection === "rock" || computerSelection === "rock" ||
                playerSelection === "scissors" || computerSelection === "scissors" ||
                playerSelection === "paper" || computerSelection === "paper"){
-        console.log("It's a tie!");
+        roundWin.textContent = "It's a tie!";
     }
 }
 
@@ -157,25 +160,30 @@ function game(){
 const wepButton = document.querySelectorAll("#weapons button");
 wepButton.forEach((button) => {
     button.addEventListener("click", () => {
-        playerSelection = capitalize(button.id);
-        console.log(playerSelection);
-        displayChosenWeapon.textContent = "Player has chosen: " + playerSelection;
+        playerSelection = button.id
         playRound();
     }      
 )});
 
-//Add playerWeapon div to the HTML
+//Add playerWeapon div to the HTML, displays weapon the player chose
 const showPlayerWeapon = document.querySelector("#weapons")
     const playerWeapon = document.createElement("div");
     showPlayerWeapon.appendChild(playerWeapon);
     playerWeapon.setAttribute("id", "playerWeapon");
 
-//Displays weapon the player chose
     const displayChosenWeapon = document.querySelector("#playerWeapon")
 
 const showGameWinner = document.querySelector("#results");
     const divGameWinner = document.createElement("div");
     showGameWinner.appendChild(divGameWinner);
+
+    //Add computerWeapon div to the HTML, displays weapon the CPU chose
+const showComputerWeapon = document.querySelector("#weapons")
+const computerWeapon = document.createElement("div");
+showComputerWeapon.appendChild(computerWeapon);
+computerWeapon.setAttribute("id", "computerWeapon");
+
+const displayChosenWeaponCPU = document.querySelector("#computerWeapon")
 
 
 //Disable buttons
@@ -206,8 +214,32 @@ const showGameWinner = document.querySelector("#results");
         restartGame.addEventListener("click", () => {
             playerPoints = 0;
             computerPoints = 0;
+            runningScorePlayer.textContent = playerPoints;
+            runningScoreCPU.textContent = computerPoints;
             divGameWinner.textContent = "";
             displayChosenWeapon.textContent = "";
             enableButtons();
+            newGame.removeChild(newGameButton);
         });
     }
+
+//Show running score
+    const runningScore = document.querySelector("#results")
+
+    const runningScorePlayer = document.createElement("div");
+    const runningScoreCPU = document.createElement("div");
+
+    runningScorePlayer.setAttribute("id", "playerScore");
+    runningScorePlayer.textContent = "0";
+    runningScoreCPU.setAttribute("id", "cpuScore");
+    runningScoreCPU.textContent = "0";
+
+    runningScore.appendChild(runningScorePlayer);
+    runningScore.appendChild(runningScoreCPU);
+
+    const displayRoundWin = document.querySelector("#results");
+     const roundWin = document.createElement("p");
+     roundWin.setAttribute("id", "roundWin");
+     roundWin.textContent = "";
+     displayRoundWin.appendChild(roundWin);
+//TO ADD RUNNING SCORE, STYLIZE CSS, POLISH
